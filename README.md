@@ -1,154 +1,106 @@
-🩺 ECG Cardio Diagnostic System
+# 🩺 ECG Cardio Diagnostic System
 
-A Deep Learning + Machine Learning–based ECG Classification System that automatically classifies ECG images into 4 cardiac conditions:
+A **Deep Learning + Machine Learning–based ECG Classification System** that automatically classifies **ECG images into 4 cardiac conditions**.
 
-NP – Normal Person
+This project replicates a research-level medical pipeline using **Custom CNN**, **ML classifiers**, **feature extraction**, and **5-Fold Cross Validation** to achieve high accuracy.
 
-AH – Abnormal Heartbeat
+## 📚 Classes in the Dataset
+- **NP – Normal Person**
+- **AH – Abnormal Heartbeat**
+- **MI – Myocardial Infarction**
+- **HMI – History of Myocardial Infarction**
 
-MI – Myocardial Infarction
+## 📦 Dataset Overview
 
-HMI – History of Myocardial Infarction
+**Total Images:** **928**
 
-This project replicates a research-level ECG diagnostic pipeline using CNNs, ML classifiers, and 5-fold cross-validation.
+| Class | Description | Count |
+|-------|-------------|--------|
+| NP | Normal Person | 284 |
+| AH | Abnormal Heartbeat | 233 |
+| MI | Myocardial Infarction | 239 |
+| HMI | History of MI | 172 |
 
-✨ Features
+### 📁 Folder Structure
 
-🧠 Custom CNN model for ECG feature extraction
+<img width="122" height="116" alt="image" src="https://github.com/user-attachments/assets/afb2366d-00eb-453f-8360-bf30dd475132" />
 
-🌲 Random Forest, Naïve Bayes, KNN, SVM, MLP machine learning classifiers
+## 🛠️ Preprocessing Steps
+Every ECG image undergoes:
 
-🔍 512-dimensional deep features extracted from CNN
+- ✂️ **Cropping** – remove header/footer text  
+- 📏 **Resize** → 227 × 227 × 3  
+- 🎚️ **Normalization** → pixel / 255  
+- 🔄 **Data Augmentation**  
+  - Rotation  
+  - Horizontal Flip  
+  - Translation  
+  - Zoom  
 
-🔄 5-Fold Cross Validation for reliable accuracy
+**Final Augmented Dataset:** ~ **4400+ images**
 
-📊 Training graphs, confusion matrices & evaluation metrics
-
-🖼️ Automated preprocessing (crop, resize, normalization, augmentation)
-
-🚀 High accuracy (Random Forest ≈ 93%)
-
-📂 Dataset Details
-Total Images: 928
-Class	Description	Count
-NP	Normal Person	284
-AH	Abnormal Heartbeat	233
-MI	Myocardial Infarction	239
-HMI	History of MI	172
-Folder Structure
-ECG-Dataset/
-│── NP/
-│── AH/
-│── MI/
-└── HMI/
-
-🛠️ Preprocessing Pipeline
-
-Every ECG image goes through:
-
-✂️ Cropping (removes top/bottom text)
-
-📏 Resize → 227 × 227 × 3
-
-🎚️ Normalization → pixel / 255
-
-🔄 Augmentation
-
-Rotation
-
-Horizontal flip
-
-Translation
-
-Zoom
-
-Final Augmented Dataset Size: ~ 4400+ images
-🔄 5-Fold Cross Validation
+## 🔄 5-Fold Cross Validation
 
 Dataset split per fold:
 
-Split	Images
-Training	742
-Testing	186
+- **Training images:** 742  
+- **Testing images:** 186  
 
-➡ Guarantees stable performance and reduces overfitting.
+This gives reliable accuracy and minimizes overfitting.
 
-🧠 Models Used
-1️⃣ Custom CNN Architecture
+## 🧠 Model Architectures
 
-3× Conv → LeakyReLU → BatchNorm → MaxPool
+### 1️⃣ Custom CNN (Deep Learning Model)
 
-Dense + Conv feature branch
+- Conv → LeakyReLU → BatchNorm → MaxPool  
+- Conv → LeakyReLU → BatchNorm → MaxPool  
+- Conv → LeakyReLU → BatchNorm → MaxPool  
+- Dense branch  
+- Feature branch  
+- 🔗 Concatenation  
+- 1×1 Convolution  
+- Dense (512)  
+- Dense (4) + **Softmax** output  
 
-Concatenation
+### 2️⃣ Machine Learning Classifiers (Using CNN Features)
 
-1×1 Convolution
+- 🌲 **Random Forest**  
+- 📘 **Gaussian NB**  
+- 🔢 **KNN**  
+- 📈 **SVM**  
+- 🧩 **MLP**  
 
-Dense (512)
+## 📊 Model Performance (5-Fold Average)
 
-Output: Dense (4 classes, Softmax)
+| Model | Accuracy |
+|--------|-----------|
+| ⭐ **Random Forest** | **93.10%** |
+| KNN | 82.65% |
+| GaussianNB | 76.83% |
+| MLP | 48.93% |
+| SVM | 30.60% |
+| Custom CNN | ~38% |
 
-2️⃣ Machine Learning Classifiers (on CNN features)
+## 🧰 Tech Stack
+- **Python**
+- **TensorFlow / Keras**
+- **Scikit-Learn**
+- **OpenCV**
+- **Albumentations**
+- **NumPy**
+- **Matplotlib / Seaborn**
 
-Trained on 512-dimensional CNN feature vectors:
+## 🚀 How to Run
 
-🌲 Random Forest
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   python train_cnn.py
+   python extract_features.py
+   python train_ml_models.py
+   python predict.py --image test.jpg
 
-📘 Gaussian Naïve Bayes
 
-🔢 KNN
-
-📈 SVM
-
-🧩 MLP (Neural Network)
-
-📊 Results (Average over 5 folds)
-Model	Accuracy
-⭐ Random Forest	93.10%
-KNN	82.65%
-GaussianNB	76.83%
-MLP	48.93%
-SVM	30.60%
-Custom CNN	~38%
-
-➡ Random Forest performed best due to strong handling of high-dimensional CNN features.
-
-🧮 Why Random Forest Achieved Highest Accuracy?
-
-Combines multiple decision trees
-
-Handles non-linear ECG patterns
-
-Robust to noise
-
-Works well with medium-sized datasets
-
-Reduces overfitting using bagging
-
-🧰 Tech Stack
-
-Python
-
-TensorFlow / Keras – CNN model
-
-scikit-learn – ML classifiers
-
-OpenCV – image preprocessing
-
-albumentations – augmentation
-
-NumPy / Pandas – feature storage
-
-Matplotlib / Seaborn – visualizations
-
-▶️ How to Run the Project
-pip install -r requirements.txt
-python train_cnn.py
-python extract_features.py
-python train_ml_models.py
-
-Predict on a new ECG:
-python predict.py --image test.jpg
-
-🩻 System Workflow Diagram (optional - ask me to generate)
-ECG Image → Preprocessing → CNN Feature Extraction → ML Classifier → Final Prediction
+---
+ 
+   
